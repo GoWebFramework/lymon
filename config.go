@@ -17,6 +17,7 @@ func (h *Context) UseDefaultConfig() {
 	conf := Config{
 		MongoURI: "mongodb://127.0.0.1:27017",
 		RedisURI: "redis://127.0.0.1:6379",
+		Listen:   "127.0.0.1:8080",
 	}
 	h.Config = conf
 
