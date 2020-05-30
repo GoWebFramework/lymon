@@ -19,7 +19,6 @@ func (h *Context) UseDefaultConfig() {
 		RedisURI: "redis://127.0.0.1:6379/0",
 		Listen:   "127.0.0.1:8080",
 	}
-	h.Config = conf
 
 	h.UseConfig(conf)
 }
@@ -27,6 +26,7 @@ func (h *Context) UseDefaultConfig() {
 // UseConfig use config from user
 func (h *Context) UseConfig(conf Config) {
 
+	h.Path = map[string]route{}
 	h.Config = conf
 
 	if conf.MongoURI != "" {
