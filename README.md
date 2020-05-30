@@ -14,28 +14,34 @@ go get -u github.com/GoWebFramework/lymon
 package main
 
 import (
-    "context"
-    "log"
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
 
-    "github.com/GoWebFramework/lymon"
+	"github.com/GoWebFramework/lymon"
 )
 
-func users(w http.ResponseWriter, r *http.Request, c Context) {
-    var result lymon.M
-    
-    ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-    c.Database.Collection("users").FindOne(ctx, lymon.M{}).Decode(&result)
-    
-    j, _ := json.Marshal(result)
-    fmt.Fprint(w, j)
+func users(w http.ResponseWriter, r *http.Request, c lymon.Context) {
+	var result lymon.M
+
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	c.Database.Collection("users").FindOne(ctx, lymon.M{}).Decode(&result)
+
+	j, _ := json.Marshal(result)
+	fmt.Fprint(w, j)
 }
 
 func main() {
-    web := lymon.Context{}
+	web := lymon.Context{}
     web.UseDefaultConfig()
 
-    web.HandleFunc("/users", "GET", users)
+    // set default mongo database
+    web.Database = web.Mongo.Database("my_site")
 
-    web.Start()
+	web.HandleFunc("/users", "GET", users)
+
+	web.Start()
 }
 ```
