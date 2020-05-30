@@ -18,12 +18,15 @@ func (h *Context) UseDefaultConfig() {
 		MongoURI: "mongodb://127.0.0.1:27017",
 		RedisURI: "redis://127.0.0.1:6379",
 	}
+	h.Config = conf
 
 	h.UseConfig(conf)
 }
 
 // UseConfig use config from user
 func (h *Context) UseConfig(conf Config) {
+
+	h.Config = conf
 
 	if conf.MongoURI != "" {
 		ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)

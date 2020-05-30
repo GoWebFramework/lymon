@@ -1,4 +1,4 @@
-package rubi
+package lymon
 
 import (
 	"net/http"
@@ -9,6 +9,8 @@ import (
 )
 
 type Context struct {
+	Config Config
+
 	Database *mongo.Database
 	Mongo    *mongo.Client
 	Redis    *redis.Client
@@ -19,6 +21,8 @@ type Context struct {
 type Config struct {
 	MongoURI string
 	RedisURI string
+
+	Listen string
 }
 
 type route struct {

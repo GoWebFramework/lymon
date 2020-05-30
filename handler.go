@@ -1,4 +1,4 @@
-package rubi
+package lymon
 
 import (
 	"log"
@@ -33,4 +33,8 @@ func (h Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(404)
 		w.Write([]byte("404"))
 	}
+}
+
+func (h Context) Start() {
+	http.ListenAndServe(h.Config.Listen, h)
 }
