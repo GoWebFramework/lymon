@@ -27,7 +27,7 @@ func (h Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Check is requested are registered in h.Path
 	// otherwise return 404 page
-	patternID := r.URL.Path + r.Method
+	patternID := r.URL.Path + "#" + r.Method
 	if val, ok := h.Path[patternID]; ok {
 		val.Handler(w, r, h)
 	} else {
