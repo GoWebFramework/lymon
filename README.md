@@ -44,6 +44,10 @@ func main() {
 	web.Database = "my_site"
 
 	web.HandleFunc("/users", "GET", users)
+	// before all middleware support
+	web.BeforeAll(func(w http.ResponseWriter, r *http.Request, c lymon.Context) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+	})
 
 	log.Println("starting server...")
 	web.Start()

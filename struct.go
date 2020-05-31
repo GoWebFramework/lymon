@@ -8,6 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+type handler = func(http.ResponseWriter, *http.Request, Context)
+
 type Context struct {
 	Config Config
 
@@ -15,7 +17,8 @@ type Context struct {
 	Mongo    *mongo.Client
 	Redis    *redis.Client
 
-	Path map[string]route
+	Path       map[string]route
+	Middleware []handler
 }
 
 type Config struct {

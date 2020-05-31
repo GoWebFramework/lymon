@@ -23,7 +23,17 @@ func (c *Context) HandleFunc(pattern, method string, handler func(http.ResponseW
 	}
 }
 
+// BeforeAll Before filters are evaluated before each request within the same context as the routes.
+// They can modify the request and response.
+func (c *Context) BeforeAll(handler func(http.ResponseWriter, *http.Request, Context)) {
+	c.Middleware = append(c.Middleware, handler)
+}
+
 func (c Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	if len(c.Middleware) > 0 {
+		c.Middleware[0](w, r, c)
+	}
 
 	// Check is requested are registered in h.Path
 	// otherwise return 404 page
