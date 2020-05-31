@@ -2,11 +2,18 @@
 
 Advanced Web API Framework for Go
 
-## Installation
-
 ```sh
 go get github.com/GoWebFramework/lymon
 ```
+
+## Feature
+
+- [x] Include MongoDB & Redis
+- [x] BeforeAll middleware
+- [x] StatusCodeHandler middleware
+- [ ] Auth Support
+- [ ] Cache Support
+- [ ] Simplify Wrapper
 
 ## Usage
 
@@ -19,7 +26,7 @@ import (
 	"net/http"
 	"time"
 
-	"./lymon"
+	"github.com/GoWebFramework/lymon"
 )
 
 func users(w http.ResponseWriter, r *http.Request, c lymon.Context) {
@@ -59,10 +66,3 @@ func main() {
 	web.Start()
 }
 ```
-
-## To Do List
-
-- [x] Include MongoDB & Redis
-- [ ] Auth Support
-- [ ] Cache Support
-- [ ] Simplify Wrapper
