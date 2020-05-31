@@ -8,7 +8,7 @@ import (
 // HandleFunc A
 func (c *Context) HandleFunc(pattern, method string, handler func(http.ResponseWriter, *http.Request, Context)) {
 	// patternID contain combination of user uri pattern and given method
-	// serveHTTP will generate this patternID too jsjfwjfk
+	// serveHTTP will generate this patternID
 	patternID := pattern + "#" + method
 
 	// panic if patternID already exist in h.Path
@@ -31,8 +31,9 @@ func (c *Context) BeforeAll(handler func(http.ResponseWriter, *http.Request, Con
 
 func (c Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	if len(c.Middleware) > 0 {
-		c.Middleware[0](w, r, c)
+	// execute middleware based on array order
+	for _, middleware := range c.Middleware {
+		middleware(w, r, c)
 	}
 
 	// Check is requested are registered in h.Path
@@ -46,6 +47,7 @@ func (c Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Start invoke http.ListenAndServe
 func (c Context) Start() {
 	http.ListenAndServe(c.Config.Listen, c)
 }
