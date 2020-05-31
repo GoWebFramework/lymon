@@ -1,5 +1,7 @@
 # Lymon
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/GoWebFramework/lymon)](https://goreportcard.com/report/github.com/GoWebFramework/lymon)
+
 Advanced Web API Framework for Go
 
 ```sh

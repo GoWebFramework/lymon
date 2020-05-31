@@ -29,7 +29,7 @@ func (c *Context) BeforeAll(handler func(http.ResponseWriter, *http.Request, Con
 	c.MiddlewareHandler = append(c.MiddlewareHandler, handler)
 }
 
-// HandleStatusCode wiht this middleware, You can customize the built-in error response, currently only works for 404
+// HandleStatusCode with this middleware, You can customize the built-in error response, currently only works for 404
 func (c *Context) HandleStatusCode(StatusCode int, handler func(http.ResponseWriter, *http.Request, Context)) {
 	// panic if StatusCode already exist in h.StatusCodeHandler
 	if _, ok := c.StatusCodeHandler[StatusCode]; ok {

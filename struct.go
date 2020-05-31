@@ -10,6 +10,7 @@ import (
 
 type handler = func(http.ResponseWriter, *http.Request, Context)
 
+// Context hold single lymon instance
 type Context struct {
 	Config Config
 
@@ -22,6 +23,7 @@ type Context struct {
 	StatusCodeHandler map[int]handler
 }
 
+// Config used when UseConfig function called
 type Config struct {
 	MongoURI string
 	RedisURI string
@@ -34,4 +36,5 @@ type route struct {
 	Method  string
 }
 
+// M called as lymon.M aka bson.M wrapper
 type M = bson.M
