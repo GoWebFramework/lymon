@@ -19,9 +19,11 @@ _Book Store CRUD With Lymon._
 - [x] Include MongoDB & Redis
 - [x] BeforeAll middleware
 - [x] StatusCodeHandler middleware
-- [ ] Auth Support
-- [ ] Cache Support
+- [ ] cmd feature
+- [ ] CRUD Generator 
+- [ ] Built-in cache wrapper
 - [ ] Simplify Wrapper
+- [ ] Auth Sample
 
 ## Usage
 
