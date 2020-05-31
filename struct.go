@@ -11,7 +11,7 @@ import (
 type Context struct {
 	Config Config
 
-	Database *mongo.Database
+	Database string
 	Mongo    *mongo.Client
 	Redis    *redis.Client
 

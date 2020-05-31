@@ -6,36 +6,36 @@ import (
 )
 
 // HandleFunc A
-func (h *Context) HandleFunc(pattern, method string, handler func(http.ResponseWriter, *http.Request, Context)) {
+func (c *Context) HandleFunc(pattern, method string, handler func(http.ResponseWriter, *http.Request, Context)) {
 	// patternID contain combination of user uri pattern and given method
 	// serveHTTP will generate this patternID too jsjfwjfk
 	patternID := pattern + "#" + method
 
 	// panic if patternID already exist in h.Path
-	if _, ok := h.Path[patternID]; ok {
+	if _, ok := c.Path[patternID]; ok {
 		log.Panicf("Failed to add %v : Duplicate route pattern \n", pattern)
 	} else {
 		// register given pattern and handler to h.Path
-		h.Path[patternID] = route{
+		c.Path[patternID] = route{
 			Handler: handler,
 			Method:  method,
 		}
 	}
 }
 
-func (h Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (c Context) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Check is requested are registered in h.Path
 	// otherwise return 404 page
 	patternID := r.URL.Path + "#" + r.Method
-	if val, ok := h.Path[patternID]; ok {
-		val.Handler(w, r, h)
+	if val, ok := c.Path[patternID]; ok {
+		val.Handler(w, r, c)
 	} else {
 		w.WriteHeader(404)
 		w.Write([]byte("404"))
 	}
 }
 
-func (h Context) Start() {
-	http.ListenAndServe(h.Config.Listen, h)
+func (c Context) Start() {
+	http.ListenAndServe(c.Config.Listen, c)
 }

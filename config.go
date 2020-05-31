@@ -13,21 +13,21 @@ import (
 )
 
 // UseDefaultConfig no comment
-func (h *Context) UseDefaultConfig() {
+func (c *Context) UseDefaultConfig() {
 	conf := Config{
 		MongoURI: "mongodb://127.0.0.1:27017",
 		RedisURI: "redis://127.0.0.1:6379/0",
 		Listen:   "127.0.0.1:8080",
 	}
 
-	h.UseConfig(conf)
+	c.UseConfig(conf)
 }
 
 // UseConfig use config from user
-func (h *Context) UseConfig(conf Config) {
+func (c *Context) UseConfig(conf Config) {
 
-	h.Path = map[string]route{}
-	h.Config = conf
+	c.Path = map[string]route{}
+	c.Config = conf
 
 	if conf.MongoURI != "" {
 		ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
@@ -35,7 +35,7 @@ func (h *Context) UseConfig(conf Config) {
 		if err != nil {
 			panic(err)
 		}
-		h.Mongo = m1
+		c.Mongo = m1
 	}
 
 	if conf.RedisURI != "" {
@@ -58,6 +58,6 @@ func (h *Context) UseConfig(conf Config) {
 			Password: url.User.Username(),
 			DB:       redisdb, // use default DB
 		})
-		h.Redis = r1
+		c.Redis = r1
 	}
 }

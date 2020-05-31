@@ -15,8 +15,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -27,21 +26,26 @@ func users(w http.ResponseWriter, r *http.Request, c lymon.Context) {
 	var result lymon.M
 
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	c.Database.Collection("users").FindOne(ctx, lymon.M{}).Decode(&result)
+	c.DB.C("users").FindOne(ctx, lymon.M{}).Decode(&result)
 
-	j, _ := json.Marshal(result)
-	fmt.Fprint(w, string(j))
+	w.Write(c.JSON(result))
 }
 
 func main() {
 	web := lymon.Context{}
-	web.UseDefaultConfig()
+    // web.UseDefaultConfig()
+    web.UseConfig(Config{
+		MongoURI: "mongodb://127.0.0.1:27017",
+		RedisURI: "redis://127.0.0.1:6379/0",
+		Listen:   "127.0.0.1:8080",
+	})
 
 	// set default mongo database
-	web.Database = web.Mongo.Database("my_site")
+	web.Database = "my_site"
 
 	web.HandleFunc("/users", "GET", users)
 
+    log.Println("starting server...")
 	web.Start()
 }
 ```
