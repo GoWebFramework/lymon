@@ -26,7 +26,10 @@ func (c *Context) UseDefaultConfig() {
 // UseConfig use config from user
 func (c *Context) UseConfig(conf Config) {
 
+	// init empty map
 	c.Path = map[string]route{}
+	c.StatusCodeHandler = map[int]handler{}
+
 	c.Config = conf
 
 	if conf.MongoURI != "" {

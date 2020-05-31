@@ -17,8 +17,9 @@ type Context struct {
 	Mongo    *mongo.Client
 	Redis    *redis.Client
 
-	Path       map[string]route
-	Middleware []handler
+	Path              map[string]route
+	MiddlewareHandler []handler
+	StatusCodeHandler map[int]handler
 }
 
 type Config struct {

@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/GoWebFramework/lymon"
+	"./lymon"
 )
 
 func users(w http.ResponseWriter, r *http.Request, c lymon.Context) {
@@ -44,9 +44,15 @@ func main() {
 	web.Database = "my_site"
 
 	web.HandleFunc("/users", "GET", users)
+
 	// before all middleware support
 	web.BeforeAll(func(w http.ResponseWriter, r *http.Request, c lymon.Context) {
 		w.Header().Add("Access-Control-Allow-Origin", "*")
+	})
+
+	// handle specific custom code, currently only applied for 404
+	web.HandleStatusCode(404, func(w http.ResponseWriter, r *http.Request, c lymon.Context) {
+		w.Write([]byte("this is custom 404 page"))
 	})
 
 	log.Println("starting server...")
