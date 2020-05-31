@@ -4,11 +4,15 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/GoWebFramework/lymon)](https://goreportcard.com/report/github.com/GoWebFramework/lymon)
 
-Advanced Web API Framework for Go
+Advanced Web API Framework for Go, Project Status : WIP
 
 ```sh
 go get github.com/GoWebFramework/lymon
 ```
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/xS1D-tTrKmQ/0.jpg)](https://www.youtube.com/watch?v=xS1D-tTrKmQ)
+
+_Book Store CRUD With Lymon._
 
 ## Feature
 
