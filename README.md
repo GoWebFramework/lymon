@@ -1,4 +1,4 @@
-<img align="right" width="100" height="100" src="https://www.pngmart.com/files/1/Lemon-PNG-Transparent-Image.png">
+<img align="right" width="100" height="100" src="https://github.com/GoWebFramework/lymon/blob/master/lemon.png?raw=true">
 
 # Lymon
 
