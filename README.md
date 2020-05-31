@@ -1,3 +1,5 @@
+<img align="right" width="100" height="100" src="https://www.pngmart.com/files/1/Lemon-PNG-Transparent-Image.png">
+
 # Lymon
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/GoWebFramework/lymon)](https://goreportcard.com/report/github.com/GoWebFramework/lymon)
@@ -68,3 +70,7 @@ func main() {
 	web.Start()
 }
 ```
+
+## Credits
+
+- [Lemon Image https://www.pngmart.com/files/1/Lemon-PNG-Transparent-Image.png](https://www.pngmart.com/files/1/Lemon-PNG-Transparent-Image.png)
