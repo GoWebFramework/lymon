@@ -10,10 +10,6 @@ Advanced Web API Framework for Go, Project Status : WIP
 go get github.com/GoWebFramework/lymon
 ```
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/xS1D-tTrKmQ/0.jpg)](https://www.youtube.com/watch?v=xS1D-tTrKmQ)
-
-_Book Store CRUD With Lymon._
-
 ## Feature
 
 - [x] Include MongoDB & Redis
