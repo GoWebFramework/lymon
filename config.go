@@ -12,25 +12,33 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Config used when UseConfig function called
+type Config struct {
+	MongoURI string
+	RedisURI string
+
+	Listen string
+}
+
 // UseDefaultConfig no comment
-func (c *Context) UseDefaultConfig() {
+func (g *Global) UseDefaultConfig() {
 	conf := Config{
 		MongoURI: "mongodb://127.0.0.1:27017",
 		RedisURI: "redis://127.0.0.1:6379/0",
 		Listen:   "127.0.0.1:8080",
 	}
 
-	c.UseConfig(conf)
+	g.UseConfig(conf)
 }
 
 // UseConfig use config from user
-func (c *Context) UseConfig(conf Config) {
+func (g *Global) UseConfig(conf Config) {
 
 	// init empty map
-	c.Path = map[string]route{}
-	c.StatusCodeHandler = map[int]handler{}
+	g.Path = map[string]route{}
+	g.StatusCodeHandler = map[int]handler{}
 
-	c.Config = conf
+	g.Config = conf
 
 	if conf.MongoURI != "" {
 		ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
@@ -38,7 +46,7 @@ func (c *Context) UseConfig(conf Config) {
 		if err != nil {
 			panic(err)
 		}
-		c.Mongo = m1
+		g.Mongo = m1
 	}
 
 	if conf.RedisURI != "" {
@@ -61,6 +69,6 @@ func (c *Context) UseConfig(conf Config) {
 			Password: url.User.Username(),
 			DB:       redisdb, // use default DB
 		})
-		c.Redis = r1
+		g.Redis = r1
 	}
 }

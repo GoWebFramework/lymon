@@ -1,6 +1,13 @@
 package lymon
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// M called as lymon.M aka bson.M wrapper
+type M = bson.M
+type D = bson.D
 
 // Database export
 type Database struct {
@@ -9,7 +16,7 @@ type Database struct {
 }
 
 // DB mongo database
-func (c Context) DB(dbname ...string) Database {
+func (c Global) DB(dbname ...string) Database {
 	if len(dbname) > 0 {
 		return Database{
 			Database: c.Mongo.Database(dbname[0]),

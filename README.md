@@ -17,13 +17,14 @@ _Book Store CRUD With Lymon._
 ## Feature
 
 - [x] Include MongoDB & Redis
+- [x] JSON & Form payload validation
 - [x] BeforeAll middleware
 - [x] StatusCodeHandler middleware
 - [ ] cmd feature
 - [ ] CRUD Generator 
 - [ ] Built-in cache wrapper
 - [ ] Simplify Wrapper
-- [ ] Auth Sample
+- [ ] Sample
 
 ## Usage
 
@@ -33,23 +34,32 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"time"
 
-	"github.com/GoWebFramework/lymon"
+	"./lymon"
 )
 
-func users(w http.ResponseWriter, r *http.Request, c lymon.Context) {
+func users(ctx lymon.Context, g *lymon.Global) {
 	var result lymon.M
 
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	c.DB().C("users").FindOne(ctx, lymon.M{}).Decode(&result)
+	to, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	g.DB().C("users").FindOne(to, lymon.M{}).Decode(&result)
 
-	w.Write(c.JSON(result))
+	ctx.JSON(result)
+}
+
+func index(ctx lymon.Context, g *lymon.Global) {
+	if ctx.V.IsValidated {
+		ctx.JSON(map[string]string{
+			"message": "valid payload!",
+		})
+	} else {
+		ctx.W.Write([]byte(`{"message": "invalid payload !"}`))
+	}
 }
 
 func main() {
-	web := lymon.Context{}
+	web := lymon.Global{}
 	// web.UseDefaultConfig()
 	web.UseConfig(lymon.Config{
 		MongoURI: "mongodb://127.0.0.1:27017",
@@ -60,16 +70,27 @@ func main() {
 	// set default mongo database
 	web.Database = "my_site"
 
-	web.HandleFunc("/users", "GET", users)
+	web.HandleFunc("/users", "GET", users, nil)
+
+	// Look at https://github.com/asaskevich/govalidator#validatestruct-2
+	// for validation reference
+	web.HandleFunc("/", "POST", index, map[string]interface{}{
+		// curl request for test
+		// invalid payload :  curl -d '{"name": "val2Conta1nNumb3r"}' http://localhost:8080
+		// valid payload :  curl -d '{"name": "alphaOnly"}' http://localhost:8080
+		"name": "required,alpha",
+	})
 
 	// before all middleware support
-	web.BeforeAll(func(w http.ResponseWriter, r *http.Request, c lymon.Context) {
-		w.Header().Add("Access-Control-Allow-Origin", "*")
+	web.BeforeAll(func(ctx lymon.Context, g *lymon.Global) {
+		ctx.W.Header().Add("Access-Control-Allow-Origin", "*")
+		ctx.W.Write([]byte("before all modifier \n"))
+		return
 	})
 
 	// handle specific custom code, currently only applied for 404
-	web.HandleStatusCode(404, func(w http.ResponseWriter, r *http.Request, c lymon.Context) {
-		w.Write([]byte("this is custom 404 page"))
+	web.HandleStatusCode(404, func(ctx lymon.Context, g *lymon.Global) {
+		ctx.W.Write([]byte("this is custom 404 page"))
 	})
 
 	log.Println("starting server...")
