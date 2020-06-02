@@ -1,6 +1,7 @@
 package lymon
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -103,16 +104,20 @@ func (g *Global) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 				body, err := ioutil.ReadAll(r.Body)
 				if err == nil {
+					// refill r.Body for FormToMAP uses
+					r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
 					var result map[string]interface{}
 					err = json.Unmarshal(body, &result)
 					if err != nil {
-						result = FormToMAP(r.Form)
+						result = FormToMAP(r, g.Config.MaxMultipartMemory)
 					}
 
 					private.V.Map = result
 					private.V.IsValidated, _ = govalidator.ValidateMap(result, handlerInstance.Validator)
 				}
+				// refill r.Body for user uses
+				r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 			}
 		}
 

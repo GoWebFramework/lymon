@@ -17,7 +17,8 @@ type Config struct {
 	MongoURI string
 	RedisURI string
 
-	Listen string
+	Listen             string
+	MaxMultipartMemory int64
 }
 
 // UseDefaultConfig no comment
