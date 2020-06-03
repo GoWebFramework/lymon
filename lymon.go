@@ -5,7 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Context hold single lymon instance
+// Global hold Configuration, Database, Path and Handler data
 type Global struct {
 	Config Config
 
@@ -13,7 +13,12 @@ type Global struct {
 	Mongo    *mongo.Client
 	Redis    *redis.Client
 
-	Path              map[string]route
+	// MiddlewareHandler store middleware handler with ordered-array
 	MiddlewareHandler []handler
+
+	// Path store main route handler based on route+method that used as key
+	Path map[string]route
+
+	// StatusCodeHandler store handler based on http status code
 	StatusCodeHandler map[int]handler
 }

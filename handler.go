@@ -16,6 +16,8 @@ type Context struct {
 	R *http.Request
 	V additional
 }
+
+// handler hold func type that will used by end-user
 type handler = func(Context, *Global)
 
 type additional struct {
@@ -32,7 +34,7 @@ type route struct {
 	Validator map[string]interface{}
 }
 
-// HandleFunc A
+// HandleFunc registers the handler function for the given pattern.
 func (g *Global) HandleFunc(pattern, method string, handler handler, validator ...map[string]interface{}) {
 	// patternID contain combination of user uri pattern and given method
 	// serveHTTP will generate this patternID
@@ -75,7 +77,7 @@ func (g *Global) HandleStatusCode(StatusCode int, handler handler) {
 	}
 }
 
-// ServeHTTP called from net/http
+// ServeHTTP called from net/http that will calls f(w, r).
 func (g *Global) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// execute middleware based on array order
@@ -110,11 +112,15 @@ func (g *Global) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					var result map[string]interface{}
 					err = json.Unmarshal(body, &result)
 					if err != nil {
+						log.Println("validator unmarshall : ", err)
 						result = FormToMAP(r, g.Config.MaxMultipartMemory)
 					}
 
 					private.V.Map = result
-					private.V.IsValidated, _ = govalidator.ValidateMap(result, handlerInstance.Validator)
+					private.V.IsValidated, err = govalidator.ValidateMap(result, handlerInstance.Validator)
+					if err != nil {
+						log.Println("validation error : ", err)
+					}
 				}
 				// refill r.Body for user uses
 				r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
